@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+   <head>
+      <base target="_top">
+      <title>wormStrains</title>
+      <script src="./js/jquery-3.5.1.js" type="text/javascript"></script>
+      <script src="./js/dataTables.js" type="text/javascript"></script>
+      <script src="./js/selectjs.js" type="text/javascript"></script>
+      <script src="./js/wormjs.js" type="text/javascript"></script>
+      <script src="./js/scrollerjs.js" type="text/javascript"></script>
+
+      <link rel="stylesheet" type="text/css" href="./css/jquery.dataTables.css">
+      <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css"> -->
+<!--       <?!= include('./js/jquery_3.5.1.js'); ?>
+      <?!= include('dataTablejs'); ?>
+      <?!= include('selectjs'); ?>
+      <?!= include('wormjs'); ?>
+      <?!= include('scrollerjs'); ?> -->
+      
+<!--       <?!= include('./css/dataTables.css'); ?>
+      <?!= include('./css/dataTables_select.css'); ?> -->
+      <style type="text/css">
+         div.dataTables_wrapper {
+          width: 600px;
+          margin: 50px;
+          }
+        /* #wormTable th {text-align: center;} */
+         .content{
+            //overflow: auto; 
+            /* margin: 50px auto;
+            border: 3px solid #666; */
+         }
+         .wormForm{
+            position: fixed;
+            height: 580px;
+            width: 640px;
+            top: 15%;
+            left: 700px;
+            background-color: #EFE5A7;
+         }
+         h3{
+            font-size: 30px;
+         }
+         .wormtext{display: block;float: left;}
+         input{
+            padding: 6px;
+            font-size: 12px;
+         }
+         textarea{
+            resize: none;
+         }
+         label{
+            display: inline-block;
+            width: 110px;
+         }
+      .dataTables_filter {
+      /* float: left !important; */
+      /* float:left !important; */
+      }
+      #inid{
+        position: relative;
+        left: 300px;
+      }
+      </style>
+
+   </head>
+
+   <body>
+    <script type="text/javascript">
+      
+        $(document).ready(function () {
+            $('#example').DataTable({
+                scrollY: '600px',
+                scrollCollapse: true,
+                paging: false,
+            });
+        });
+    </script>
+      <script type="text/javascript">
+        var formdata;
+        var mytable;
+          
+          function showData(){
+          $(document).ready(function(){
+          // formdata = dataArray;
+          var tableobj = $('#wormTable').DataTable({
+          scrollY:  660,
+          scrollX:  true,
+          paging:   true,
+          select:   true,
+          scroller: true,
+
+          // data: dataArray,
+        //CHANGE THE TABLE HEADINGS BELOW TO MATCH WITH YOUR SELECTED DATA RANGE
+          columns: [
+            {"title":"No"},
+            {"title":"ZW"},
+            {"title":"Genotype"},
+            // {"render":function(data){if(data == "undefined") {return "tbd"} else {return data}}},
+            ]
+          });
+          
+          mytable = tableobj;
+          tableobj.on('select',function(){
+            var mydata = tableobj.row( { selected: true }).data();
+            showrecord(mydata);
+          })
+          movebottom();
+          tableobj.column(0).visible(false);
+          });
+          }
+          function newrecord(){
+            // alert(mytable.data().length);
+            newwormform(mytable.data().length);
+            movebottom();
+          }
+
+      </script>
+      
+<!--       <script>
+      var table = $('#wormTable').DataTable();
+      var selecteddata = table.rows( { selected: true } ).data();
+      if (selecteddata.length>1){
+          document.getElementById("zwno").value(selecteddata[2]);
+      }
+      
+      </script> -->
+
+      <div class="content">
+          <div class="dataTables_filter">
+            <table id="wormTable" class="cell-border stripe" style="width:100%">
+			      </table>
+
+		      </div>
+
+         <div class="wormForm">
+            <h3 style="text-align: center;">WormStrains</h3>
+            <form id="wormstrainForm" onsubmit="handleFormSubmit(this)">
+               <div>
+               <label for="zwno" style="width: 114px;text-align: right; vertical-align: middle;">ZW:</label> <input type="text" name="zwname" id="zwno" required size="6">&nbsp
+                <label for="crossid" style="width: 100px">Times Crossed:</label>&nbsp&nbsp<input type="text" name="crossNo" id="crossID" maxlength="4" size="4">
+                <label id="wormnoid" style="width: 150px; text-align: right;color: #EFE5A7;"></label></div><br>
+
+                <div>
+                <label for="genoID" class="wormtext" style="vertical-align: middle; width: 110px; text-align: right;">Genotype :</label>&nbsp
+                <textarea id="genoID" name="genotype" cols="60" rows="5">Enter text here...</textarea> <br><br></div>
+
+                <div>
+                <label for="phenoID" class="wormtext" style="vertical-align: middle;width: 110px;text-align: right;">Phenotype :</label>&nbsp
+                <textarea id="phenoID" name="phenotype" cols="60" rows="5">Enter text here...</textarea> <br><br>
+                
+                <div>
+                <label style="width: 115px;vertical-align: middle;text-align: right;">Obtained From :</label>
+                <input type="text" name="obtained" id="obtainedID" size="6"> 
+                
+
+                <label style="width: 80px; text-align: right;">Strain ID :</label>
+                <input type="text" name="strainid" id="strainID" size="6"> 
+
+               <label style="width: 133px; text-align: right;">Created By :</label>
+                <input type="text" name="createdby" id="createID" size="6">
+                </div><br>
+
+                <div>
+                <label style="width: 216px; text-align: right; font-size: 18px;"> Freeze Location -80 Freezer</label></div> <br>
+
+                <div>
+                <label style="width: 116px;text-align: right;">Frozen By :</label> <input type="text" name="frozenby" id="frozenby" size="6">
+                <label style="width: 76px; text-align: right;">Shelf# :</label>&nbsp <input type="text" name="shelfno" id= "shelfno" size="6">
+                <label style="width: 93px; text-align: right;">Date :</label>&nbsp <input type="date" name="frozendate" id = "frozendate" size="8"><br></div> <br>
+                <div>
+                <label style="width: 116px; text-align: right;">Liquid N2(1) :</label> <input type="text" name="nitrogen1" id = "nitrogen1" size="6" value="">
+                <label style="width: 76px; text-align: right;">N2(2) :</label>&nbsp&nbsp<input type="text" name="nitrogen2" id = "nitrogen2" size="6" value=""><br><br>
+                  </div>
+                <div>
+                <!-- <input type="submit" value="Save" align="right" style="position: absolute;left: 60%"> -->
+                <input type="button" value="Save" align="right" style="position: absolute;left: 60%" onclick="savebtn()">
+                <input type="button" value="New" align="right" style="position: absolute;left: 40%" onclick= "newrecord()"> </div>
+            </form>
+            <script>
+          function savebtn(){
+            var savebit = confirm("Are you sure to save or edit the record ?");
+            if (savebit){
+              var currentno = parseInt(document.getElementById("wormnoid").innerHTML,10);
+              var lastrecordno = mytable.data().length;
+                if(currentno==lastrecordno){
+                  google.script.run.appendNewRecord(getrecord());
+                  mytable.row.add(getrecord()).draw();
+                  movebottom();
+                } else {
+                  var recordarray = new Array(1);
+                  recordarray[0] = getrecord();
+                  google.script.run.editRecord(currentno+2,recordarray);
+                  
+                  mytable.row(currentno).data(getrecord()).draw();
+                  mytable.scroller.toPosition(currentno);
+                }
+            }
+          }
+            </script>
+      </div>
+   </body>
+
+</html>
